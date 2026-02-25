@@ -1,6 +1,6 @@
-### SMH VS SPY RETURNS: JAN 1, 2026 to FEB 24, 2026 ###
+# SMH VS SPY RETURNS: JAN 1, 2026 to FEB 24, 2026 #
 
-# Total SMH returns:       +10.60%
+## Total SMH returns:       +10.60%
 # Daily average SMH:       +0.3154%
 
 # Total SPY returns:       -0.11%
