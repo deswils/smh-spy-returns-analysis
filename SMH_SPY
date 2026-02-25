@@ -1,0 +1,55 @@
+
+
+# Returns of SMH vs SPY from Jan 1, 2026 to Feb 23, 2026 #.
+
+import yfinance as yf
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Define tickers and time frame
+tickers = ['SMH', 'SPY']
+start_date = '2026-01-01'
+end_date = '2026-02-24' # yfinance excludes Feb 24, 2026
+
+# Download daily adjusted close prices
+data = yf.download(tickers, start=start_date, end=end_date)['Close']
+
+# Drop rows with missing data
+data = data.dropna()
+
+# Calculate daily returns and cumulative performance (start at 1)
+daily_returns = data.pct_change().dropna()
+normalized = (1 + daily_returns).cumprod()
+
+# Calculate % returns
+returns = (data.iloc[-1] / data.iloc[0] - 1) * 100
+
+print(f"Total return for SMH [{start_date} to {end_date}]: {returns['SMH']:.2f}%")
+print(f"Total return for SPY [{start_date} to {end_date}]: {returns['SPY']:.2f}%")
+
+# Plot normalized returns
+plt.figure(figsize=(10,6))
+plt.plot(normalized.index, normalized['SMH'], label='SMH')
+plt.plot(normalized.index, normalized['SPY'], label='SPY')
+plt.title('SMH vs SPY (Normalized Returns)\nJan 1, 2026 to Feb 24, 2026')
+plt.xlabel('Date')
+plt.ylabel('Normalized Price')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show() 
+
+
+# Average daily returns table
+average_returns = daily_returns.mean().to_frame(name='Average Daily Return')
+average_returns.index.name = 'ETF'
+print(average_returns)
+
+# Correlation table between SMH and SPY
+correlation_table = daily_returns.corr()
+print(correlation_table)
+
+print("First trading day prices:")
+print(data.iloc[0])   # first trading day prices
+print("Last trading day prices:")
+print(data.iloc[-1])  # last trading day prices
